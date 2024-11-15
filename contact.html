@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CONTACT . Siêu Xe Máy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;400;500&display=swap" rel="stylesheet" />
+    <!-- font awaresome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <!--reset css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="assets/CSS/main.css" />
+    <link rel="stylesheet" href="assets/CSS/page4.css" />
+    <link rel="shortcut icon" href="assets/IMG/logo.png" type="image/x-icon" />
+    <!-- jquery , JS-->
+    <script src="./js/jquery-3.6.1.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/contact.js"></script>
+
+</head>
+
+<body class="app">
+    <header class="header">
+        <div class="header_right-side">
+            <img class="header__navbar-logo" src="assets/IMG/logo.png" alt="Logo HF here" />
+            <a class="header_navbar-item header_navbar-webname" href="">Siêu Xe Máy</a
+        >
+      </div>
+      <div class="center header_navbar-list">
+            <a class="header_navbar-item" href="./index.html">Trang chủ</a>
+            <a class="header_navbar-item" href="./sitemap.html">Sitemap</a>
+            <a class="header_navbar-item" href="./about.html">Giới thiệu</a>
+            <a class="header_navbar-item" href="./menu.html">Cửa hàng</a>
+            <a class="header_navbar-item" href="./page.html">Tin tức</a>
+            <a class="header_navbar-item" id="hearder_cart" href="">Giỏ hàng(<span class="header_navbar-num-of-cart">3</span>)
+          <ul class="header_info-cart">
+            <li class="header_info-cart-items">
+              <img
+                class="header_info-cart-img"
+                src=".//assets/IMG/air black.jpg"
+                alt=""
+              />
+              <p class="header-cart-item-name">Air Blade 2025</p>
+              <button class="item-change-down">-</button>
+              <div class="item-quantum">1</div>
+              <button class="item-change-up">+</button>
+            </li>
+            <li class="header_info-cart-items">
+              <img
+                class="header_info-cart-img"
+                src="./assets/IMG/vario 160.jpg"
+                alt=""
+              />
+              <p class="header-cart-item-name">Vario 160</p>
+              <button class="item-change-down">-</button>
+              <div class="item-quantum">1</div>
+              <button class="item-change-up">+</button>
+            </li>
+            <li class="header_info-cart-items">
+              <img
+                class="header_info-cart-img"
+                src="./assets/IMG/sh mode.jpg"
+                alt=""
+              />
+              <p class="header-cart-item-name">SH Mode 2024</p>
+              <button class="item-change-down">-</button>
+              <div class="item-quantum">1</div>
+              <button class="item-change-up">+</button>
+            </li>
+          </ul>
+        </a>
+        </div>
+        <span class="header_navbar-sign" style="opacity: 0%">
+        <button class="button-form header_navbar-order">Order online</button>
+        <button class="button-form header_navbar-Reservate">Đặt trước</button>
+      </span>
+    </header>
+    <div class="container">
+        <div class="ctn-slide1">
+            <div class="slide1_slice1">
+                <p class="silde1_heading">LIÊN HỆ </p>
+                <p class="slide1_des">
+                    Để đặt xe online hoặc đặt trước vui lòng điền form này. Bạn sẽ được liên hệ để trao đổi trong vòng 2h.
+                </p>
+                <div class="ctn-contact">
+                    <div class="slide1_icon">
+                        <i class="fa-brands fa-square-facebook"></i><span> </span>
+                        <i class="fa-brands fa-square-instagram"></i>
+                    </div>
+                    <div class="slide1_info">Siêu xe Máy</div>
+                    <div class="slide1_icon">
+                        <i class="fa-solid fa-square-phone"></i>
+                    </div>
+                    <div class="slide1_info">0332.879.857</div>
+                    <div class="slide1_icon">
+                        <i class="fa-solid fa-map-location"></i>
+                    </div>
+                    <div class="slide1_info">
+                        CN1: 798 Quang Trung, phường 12,<br />quận Gò Vấp, TP Hồ Chí Minh <br />
+                        <br /> CN2: 123 Phạm Văn Đồng, phường 3, quận Gò Vấp, TP Hồ Chí Minh
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide1_slice2">
+                <div class="rect">
+                    <form action="">
+                        <table class="form_table">
+                            <tr>
+                                <td>
+                                    <label id="label_name" for="name">Tên: <span> </span
+                    ></label>
+                                </td>
+                                <td>
+                                    <label id="label_email" for="email">Địa chỉ email: <span> </span
+                    ></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" name="" id="name" placeholder="Hoàng Triều" />
+                                </td>
+                                <td>
+                                    <input type="email" name="" id="email" placeholder="example@gmail.com" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label id="label_tel" for="tel">Số điện thoại: <span> </span
+                    ></label>
+                                </td>
+                                <td>
+                                    <label id="label_sub" for="sub">Số lượng đặt: <span> </span
+                    ></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="tel" name="" id="tel" placeholder="123789456" />
+                                </td>
+                                <td>
+                                    <input type="number" name="" id="sub" placeholder="1,2,3..." />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <label id="label_mess" for="mess">Bạn muốn đặt xe gì? <span> </span
+                    ></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <textarea class="mess_box" name="" id="mess" placeholder="Vui lòng điền xe bạn muốn đặt trước..."></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="b1" type="button">Gửi</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalSucces" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLongTitle">
+                        Đặt hàng thành công
+                    </h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+                </div>
+                <div class="modal-body">
+                    <p class="">Vui lòng kiểm tra thông tin lần nữa!</p>
+                    <div>Name: <span id="suc_1"></span></div>
+                    <div>Email: <span id="suc_2"></span></div>
+                    <div>Phone: <span id="suc_3"></span></div>
+                    <div>Số Lượng: <span id="suc_4"></span></div>
+                    <div>Bạn đặt xe: <span id="suc_5"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ADMIN.Siêu Xe Máy</title>
+    <link rel="stylesheet" href="assets/CSS/admin.css" />
+    <link rel="stylesheet" href="./assets/CSS/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            function countValue() {
+                var total = 0;
+                $('input[name="meal"]:checked').each(function() {
+                    total += parseFloat($(this).val());
+                });
+                $("#inp_o_value").val(total);
+            }
+            $('input[name="meal"]').change(countValue);
+
+            function validoOID() {
+                var OID = $("#inp_o_code").val();
+                var reg_OID = /^ORD[A-Za-z0-9]{3,}$/;
+                if (reg_OID.test(OID)) {
+                    $("#notiinp_o_code").html("");
+
+                    return true;
+                } else {
+                    $("#notiinp_o_code").html("Mã phải bắt đầu bằng ORDxxx");
+                    return false;
+                }
+            }
+            $("#inp_o_code").blur(validoOID);
+
+            function validODate() {
+                var Odate = new Date($("#inp_o_date").val());
+                var today = new Date();
+                Odate.setHours(0, 0, 0, 0);
+                today.setHours(0, 0, 0, 0);
+                if (today.getTime() > Odate.getTime()) {
+                    $("#notiinp_o_date").html("");
+
+                    return true;
+                } else {
+                    $("#notiinp_o_date").html("Ngày phải trước ngày hôm nay");
+                    return false;
+                }
+            }
+            $("#inp_o_date").blur(validODate);
+
+            function validpID() {
+                var pID = $("#inp_p_code").val();
+                var reg_pID = /^PRD[A-Za-z0-9]{3,}$/;
+                if (reg_pID.test(pID)) {
+                    $("#notiinp_p_code").html("");
+
+                    return true;
+                } else {
+                    $("#notiinp_p_code").html("Mã phải bắt đầu bằng PRDxxx");
+                    return false;
+                }
+            }
+            $("#inp_p_code").blur(validpID);
+
+            function validpName() {
+                var pName = $("#inp_p_name").val();
+                if (pName.length) {
+                    $("#notiinp_p_name").html("");
+                    return true;
+                } else {
+                    $("#notiinp_p_name").html("Không được để trống");
+                    return false;
+                }
+            }
+            $("#inp_p_name").blur(validpName);
+
+            function validpPrice() {
+                var pPrice = $("#inp_p_price").val();
+                if (pPrice > 0) {
+                    $("#notiinp_p_price").html("");
+                    return true;
+                } else {
+                    $("#notiinp_p_price").html("Giá phải lớn hơn 0");
+                    return false;
+                }
+            }
+            $("#inp_p_price").blur(validpPrice);
+
+            function validpQuantity() {
+                var pQuantity = $("#inp_p_quantity").val();
+                if (pQuantity > 0) {
+                    $("#notiinp_p_quantity").html("");
+                    return true;
+                } else {
+                    $("#notiinp_p_quantity").html("Số lượng phải lớn hơn 0");
+                    return false;
+                }
+            }
+            $("#inp_p_quantity").blur(validpQuantity);
+
+            function countTotal() {
+                const xhr = new XMLHttpRequest();
+                xhr.open(
+                    "GET",
+                    "https://6457cf7b1a4c152cf98b05ea.mockapi.io/api/admin/orders"
+                );
+                xhr.responseType = "json";
+                xhr.onload = function(e) {
+                    if (this.status == 200) {
+                        console.log("response", this.response); // JSON response
+                        let total = 0;
+
+                        this.response.forEach((element) => {
+                            total += parseFloat(element.value);
+                        });
+                        $(".value1").html(total);
+                        let avg = 156;
+                        let per = total / (avg / 100);
+                        $(".value1").html(total);
+                        var sta = avg > total ? "▼" : avg == total ? "◐" : "▲";
+                        $(".value2").html(per.toFixed(1) + " " + sta);
+                    }
+                };
+                xhr.send();
+            }
+            countTotal();
+        });
+    </script>
+    <script>
+        // load table products
+        $(document).ready(function() {
+            const xhr = new XMLHttpRequest();
+            xhr.open(
+                "GET", "https://6457cf7b1a4c152cf98b05ea.mockapi.io/api/admin/products"
+            );
+            xhr.responseType = "json";
+            xhr.onload = function(e) {
+                if (this.status == 200) {
+                    console.log("response", this.response); // JSON response
+                    this.response.forEach((element) => {
+                        var classRecord = "product-record-" + element.id;
+                        $(".product-list").append(
+                            "<tr class='" + classRecord + "'><td>" +
+                            element.code + "</td><td>" +
+                            element.name + "</td><td>" +
+                            element.price + "$</td><td>" +
+                            element.remainingQuantity + "</td><td>" +
+                            '<button class="btn btn-warning" onclick=\'editProduct(' + element.id + ")'>Edit</button>" +
+                            '<button class="btn btn-danger" onclick=\'deleteProduct(' + element.id + ")'>Delete product</button></td></tr>"
+                        );
+                    });
+                }
+            };
+            xhr.send();
+        });
+
+        function deleteProduct(productId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "https://6457cf7b1a4c152cf98b05ea.mockapi.io/api/admin/products/" + productId);
+            xhr.responseType = "json";
+            xhr.send();
+            $(".product-record-" + productId).remove();
+        }
+
+
+        function editProduct(productId) {}
+
+        function addProduct() {}
+
+        $(document).ready(function() {
+            const xhr = new XMLHttpRequest();
+            xhr.open(
+                "GET",
+                "https://6457cf7b1a4c152cf98b05ea.mockapi.io/api/admin/orders"
+            );
+            xhr.responseType = "json";
+            xhr.onload = function(e) {
+                if (this.status == 200) {
+                    console.log("response", this.response); // JSON response
+                    this.response.forEach((element) => {
+                        var classRecord = "order-record-" + element.id;
+                        $(".oders-table").append("<tr class='" + classRecord + "'><td>" +
+                            element.orderId + "</td><td>" +
+                            element.orderDate + "</td><td>" +
+                            element.value + "$</td><td>" +
+                            element.status + "</td><td>" +
+                            '<button class="btn btn-warning" onclick=\'orderProcessing(' + element.id + ")'>Order processing</button>" +
+                            '<button class="btn btn-danger" onclick=\'cancelOrder(' + element.id + ")'>Cancel order</button></td></tr>"
+                        );
+                    });
+                }
+            };
+            xhr.send();
+        });
+
+
+        function orderProcessing(orderId) {
+
+        }
+
+        function cancelOrder(orderId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "https://6457cf7b1a4c152cf98b05ea.mockapi.io/api/admin/orders/" + orderId);
+            xhr.responseType = "json";
+            xhr.send();
+            $(".order-record-" + orderId).remove();
+        }
+        function themSanPham() {
+    // Kiểm tra tính hợp lệ của các trường nhập liệu
+    if (!kiemTraMaSanPham() || !kiemTraTenSanPham() || !kiemTraGiaSanPham() || !kiemTraSoLuongSanPham()) {
+        return false; // Dừng thêm nếu dữ liệu không hợp lệ
+    }
+
+    // Lấy dữ liệu từ các trường nhập liệu
+    var maSanPham = $("#inp_p_code").val();
+    var tenSanPham = $("#inp_p_name").val();
+    var giaSanPham = $("#inp_p_price").val();
+    var soLuong = $("#inp_p_quantity").val();
+
+    // Gửi dữ liệu lên API (dùng POST request)
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://6457cf7b1a4c152cf98b05ea.mockapi.io/api/admin/products");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.responseType = "json";
+    xhr.onload = function () {
+        if (this.status == 201) {
+            // Thêm sản phẩm thành công, cập nhật giao diện với sản phẩm mới
+            var sanPham = this.response;
+            var classRecord = "product-record-" + sanPham.id;
+
+            // Thêm vào danh sách sản phẩm trong giao diện
+            $(".product-list").append(
+                "<tr class='" + classRecord + "'><td>" +
+                sanPham.code + "</td><td>" +
+                sanPham.name + "</td><td>" +
+                sanPham.price + "đ</td><td>" +
+                sanPham.remainingQuantity + "</td><td>" +
+                '<button class="btn btn-warning" onclick=\'chinhSuaSanPham(' + sanPham.id + ")'>Chỉnh sửa</button>" +
+                '<button class="btn btn-danger" onclick=\'xoaSanPham(' + sanPham.id + ")'>Xóa sản phẩm</button></td></tr>"
+            );
+
+            // Ẩn modal sau khi thêm thành công
+            $('#modal_inp_product').modal('hide');
+        } else {
+            console.error("Không thể thêm sản phẩm");
+        }
+    };
+    xhr.onerror = function() {
+        console.error("Có lỗi xảy ra khi gọi API");
+    };
+    xhr.send(JSON.stringify({
+        code: maSanPham,
+        name: tenSanPham,
+        price: parseFloat(giaSanPham),
+        remainingQuantity: parseInt(soLuong),
+    }));
+}
+
+function themDonHang() {
+    // Kiểm tra tính hợp lệ của các trường nhập liệu
+    if (!validoOID() || !validODate()) {
+        return false; // Dừng thêm nếu dữ liệu không hợp lệ
+    }
+
+    // Lấy dữ liệu từ các trường nhập liệu
+    var maDon = $("#inp_o_code").val();
+    var ngayDat = $("#inp_o_date").val();
+    var giaTri = $("#inp_o_value").val();
+
+    // Gửi dữ liệu lên API (dùng POST request)
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://6457cf7b1a4c152cf98b05ea.mockapi.io/api/admin/orders");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.responseType = "json";
+    xhr.onload = function () {
+        if (this.status == 201) {
+            // Thêm thành công, cập nhật giao diện với đơn hàng mới
+            var classRecord = "order-record-" + this.response.id;
+            $(".oders-table").append(
+                "<tr class='" + classRecord + "'><td>" +
+                this.response.orderId + "</td><td>" +
+                this.response.orderDate + "</td><td>" +
+                this.response.value + "đ</td><td>" +
+                this.response.status + "</td><td>" +
+                '<button class="btn btn-warning" onclick=\'orderProcessing(' + this.response.id + ")'>Xử lý đơn hàng</button>" +
+                '<button class="btn btn-danger" onclick=\'cancelOrder(' + this.response.id + ")'>Hủy đơn hàng</button></td></tr>"
+            );
+            // Ẩn modal sau khi thêm thành công
+            $('#modal_inp_order').modal('hide');
+        } else {
+            console.error("Không thể thêm đơn hàng");
+        }
+    };
+    xhr.send(JSON.stringify({
+        orderId: maDon,
+        orderDate: ngayDat,
+        value: parseFloat(giaTri),
+    }));
+}
+
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Siêu Xe Máy - Admin</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Rời khỏi</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="total">
+            <span class="label">Tổng cộng:</span>
+            <span class="value1">Counting</span>
+            <span class="label">So với mức trung bình hàng ngày:</span>
+            <span class="value2">Counting</span>
+        </div>
+        <br />
+        <section id="orders">
+            <h2>Đơn hàng</h2>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modal_inp_order">
+        Thêm đơn hàng</button><br /><br />
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Ngày đặt</th>
+                        <th>Giá trị</th>
+                        <th>Tình trạng</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="oders-table"></tbody>
+            </table>
+        </section>
+        <section id="products">
+            <h2>Sản phẩm</h2>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modal_inp_product">
+            Thêm sản phẩm</button><br /><br />
+            <table id="table-product">
+                <thead>
+                    <tr>
+                        <th>Mã sản phẩm</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng còn lại</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="product-list"></tbody>
+            </table>
+        </section>
+        <section>
+            <h2>Quản lý đặt hàng</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ngày đặt</th>
+                        <th>Người đặt</th>
+                        <th>Số điện thoại</th>
+                        <th>Email</th>
+                        <th>Thời gian đến nhận</th>
+                        <th>Ghi chú</th>
+                        <th>Tình trạng</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>05/05/2023</td>
+                        <td>Nguyen Van Tien</td>
+                        <td>0123456789</td>
+                        <td>nguyenvana@gmail.com</td>
+                        <td>12:00</td>
+                        <td>không</td>
+                        <td>Unconfirmed</td>
+                        <td>
+                            <button class="btn btn-success">Confirm</button>
+                            <button class="btn btn-danger">Cancel</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>04/05/2023</td>
+                        <td>Cao Pham Ngoc Tran</td>
+                        <td>0565545877</td>
+                        <td>trancp@gmail.com</td>
+                        <td>14:00</td>
+                        <td>Không</td>
+                        <td>Unconfirmed</td>
+                        <td>
+                            <button class="btn btn-success">Confirm</button>
+                            <button class="btn btn-danger">Cancel</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>01/05/2023</td>
+                        <td>Tran Thi B</td>
+                        <td>0987654321</td>
+                        <td>tranthib@gmail.com</td>
+                        <td>18:00</td>
+                        <td>Có thể sẽ đến trễ hơn dự định</td>
+                        <td>Confirmed</td>
+                        <td>
+                            <button class="btn btn-danger">Cancel</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <h2 class="chart_title">Tỷ lệ khách truy cập trang</h2>
+        <div class="chart">
+            <div class="bar" style="height: 20px">8</div>
+            <div class="bar" style="height: 30px">9</div>
+            <div class="bar" style="height: 50px">10</div>
+            <div class="bar" style="height: 60px">11</div>
+            <div class="bar" style="height: 80px">12</div>
+            <div class="bar" style="height: 50px">13</div>
+            <div class="bar" style="height: 30px">14</div>
+            <div class="bar" style="height: 10px">15</div>
+            <div class="bar" style="height: 20px">16</div>
+            <div class="bar" style="height: 40px">17</div>
+            <div class="bar" style="height: 50px">18</div>
+            <div class="bar" style="height: 20px">19</div>
+            <div>Tổng cộng: 172</div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Siêu Xe Máy. All rights reserved.</p>
+    </footer>
+    <!-- modal input product -->
+    <div id="modal_inp_product" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="my-modal-title">Thêm sản phẩm</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <form method="get" action="">
+                        <div class="form-group">
+                            <label for="inp_p_code">Mã sản phẩm</label>
+                            <input id="inp_p_code" class="form-control" type="text" name="" value="PRD" />
+                            <span id="notiinp_p_code" class="Wrong_col"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp_p_name">Tên sản phẩm</label>
+                            <input id="inp_p_name" class="form-control" type="text" name="" />
+                            <span id="notiinp_p_name" class="Wrong_col"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp_p_price">Giá sản phẩm</label>
+                            <input id="inp_p_price" class="form-control" type="number" name="" />
+                            <span id="notiinp_p_price" class="Wrong_col"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp_p_quantity">Số lượng</label>
+                            <input id="inp_p_quantity" class="form-control" type="number" name="" />
+                            <span id="notiinp_p_quantity" class="Wrong_col"></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" onclick="themSanPham()">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal input order -->
+    <div id="modal_inp_order" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="my-modal-title">Thêm đơn</h5>
+                    <button class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <form method="get" action="">
+                        <div class="form-group">
+                            <label for="inp_o_code">Mã đơn</label>
+                            <input id="inp_o_code" class="form-control" type="text" name="" value="ORD" />
+                            <span id="notiinp_o_code" class="Wrong_col"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp_o_date">Ngày đặt</label>
+                            <input id="inp_o_date" class="form-control" type="date" name="inp_o_date" />
+                            <span id="notiinp_o_date" class="Wrong_col"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inp_o_value">Giá</label>
+                            <input id="inp_o_value" class="form-control" type="text" value=""  />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" onclick="themDonHang()">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
